@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using REST_API_TEMPLATEE.Data;
 using REST_API_TEMPLATEE.Models;
+using REST_API_TEMPLATEE.Models.Domain;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace REST_API_TEMPLATEE.Services
 {
@@ -13,7 +15,7 @@ namespace REST_API_TEMPLATEE.Services
             _db = db;
         }
 
-        #region Authors
+        // Students Services
 
         public async Task<List<Author>> GetAuthorsAsync()
         {
@@ -23,25 +25,20 @@ namespace REST_API_TEMPLATEE.Services
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
 
-        public async Task<Author> GetAuthorAsync(Guid id, bool includeBooks)
+        public async Task<Author> GetAuthorAsync(int id)
         {
             try
             {
-                if (includeBooks) // books should be included
-                {
-                    return await _db.Authors.Include(b => b.Books)
-                        .FirstOrDefaultAsync(i => i.Id == id);
-                }
-
-                // Books should be excluded
                 return await _db.Authors.FindAsync(id);
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
@@ -52,11 +49,12 @@ namespace REST_API_TEMPLATEE.Services
             {
                 await _db.Authors.AddAsync(author);
                 await _db.SaveChangesAsync();
-                return await _db.Authors.FindAsync(author.Id); // Auto ID from DB
+                return await _db.Authors.FindAsync(author.Id);
             }
             catch (Exception ex)
             {
-                return null; // An error occured
+                // Handle exception appropriately
+                return null;
             }
         }
 
@@ -66,11 +64,11 @@ namespace REST_API_TEMPLATEE.Services
             {
                 _db.Entry(author).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-
                 return author;
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
@@ -79,48 +77,47 @@ namespace REST_API_TEMPLATEE.Services
         {
             try
             {
-                var dbAuthor = await _db.Authors.FindAsync(author.Id);
-
-                if (dbAuthor == null)
+                var Author = await _db.Authors.FindAsync(author.Id);
+                if (Author == null)
                 {
-                    return (false, "Author could not be found");
+                    return (false, "Student not found.");
                 }
 
-                _db.Authors.Remove(author);
+                _db.Authors.Remove(Author);
                 await _db.SaveChangesAsync();
-
-                return (true, "Author got deleted.");
+                return (true, "Student deleted successfully.");
             }
             catch (Exception ex)
             {
-                return (false, $"An error occured. Error Message: {ex.Message}");
+                // Handle exception appropriately
+                return (false, $"An error occurred: {ex.Message}");
             }
         }
 
-        #endregion Authors
-
-        #region Books
+        // Courses Services
 
         public async Task<List<Book>> GetBooksAsync()
         {
             try
             {
-                return await _db.Books.ToListAsync();
+                return await _db.Book.ToListAsync();
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
 
-        public async Task<Book> GetBookAsync(Guid id)
+        public async Task<Book> GetBookAsync(int id)
         {
             try
             {
-                return await _db.Books.FindAsync(id);
+                return await _db.Book.FindAsync(id);
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
@@ -129,13 +126,14 @@ namespace REST_API_TEMPLATEE.Services
         {
             try
             {
-                await _db.Books.AddAsync(book);
+                await _db.Book.AddAsync(book);
                 await _db.SaveChangesAsync();
-                return await _db.Books.FindAsync(book.Id); // Auto ID from DB
+                return book;
             }
             catch (Exception ex)
             {
-                return null; // An error occured
+                // Handle exception appropriately
+                return null;
             }
         }
 
@@ -145,11 +143,11 @@ namespace REST_API_TEMPLATEE.Services
             {
                 _db.Entry(book).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-
                 return book;
             }
             catch (Exception ex)
             {
+                // Handle exception appropriately
                 return null;
             }
         }
@@ -158,24 +156,100 @@ namespace REST_API_TEMPLATEE.Services
         {
             try
             {
-                var dbBook = await _db.Books.FindAsync(book.Id);
-
-                if (dbBook == null)
+                var Book = await _db.Book.FindAsync(book.Id);
+                if (Book == null)
                 {
-                    return (false, "Book could not be found.");
+                    return (false, "Course not found.");
                 }
 
-                _db.Books.Remove(book);
+                _db.Book.Remove(Book);
                 await _db.SaveChangesAsync();
-
-                return (true, "Book got deleted.");
+                return (true, "Course deleted successfully.");
             }
             catch (Exception ex)
             {
-                return (false, $"An error occured. Error Message: {ex.Message}");
+                // Handle exception appropriately
+                return (false, $"An error occurred: {ex.Message}");
             }
         }
 
-        #endregion Books
+        // StudentCourses Services
+
+        public async Task<List<Publishers>> GetPublishersAsync()
+        {
+            try
+            {
+                return await _db.Publishers.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return null;
+            }
+        }
+
+        public async Task<Publishers> GetPublisherAsync(int id)
+        {
+            try
+            {
+                return await _db.Publishers.FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return null;
+            }
+        }
+
+        public async Task<Publishers> AddPublisherAsync(Publishers publishers)
+        {
+            try
+            {
+                await _db.Publishers.AddAsync(publishers);
+                await _db.SaveChangesAsync();
+                return publishers;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return null;
+            }
+        }
+
+        public async Task<Publishers> UpdatePublisherAsync(Publishers publishers)
+        {
+            try
+            {
+                _db.Entry(publishers).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+                return publishers;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return null;
+            }
+        }
+
+        public async Task<(bool, string)> DeletePublisherAsync(Publishers publishers)
+        {
+            try
+            {
+                var publishers1 = await _db.Publishers.FindAsync(publishers.Id);
+                if (publishers1 == null)
+                {
+                    return (false, "Course not found.");
+                }
+
+                _db.Publishers.Remove(publishers1);
+                await _db.SaveChangesAsync();
+                return (true, "Course deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately
+                return (false, $"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

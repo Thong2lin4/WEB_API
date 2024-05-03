@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using REST_API_TEMPLATEE.Data;
 
@@ -11,9 +12,11 @@ using REST_API_TEMPLATEE.Data;
 namespace REST_API_TEMPLATEE.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240502025607_newdatabase")]
+    partial class newdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,7 +68,7 @@ namespace REST_API_TEMPLATEE.Migrations
 
                     b.HasIndex("PublishersId");
 
-                    b.ToTable("Book", (string)null);
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.DTO.BookWithAuthorAndPublisherDTO", b =>
@@ -110,7 +113,7 @@ namespace REST_API_TEMPLATEE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("bookWithAuthorAndPublisherDTOs", (string)null);
+                    b.ToTable("bookWithAuthorAndPublisherDTOs");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.DTO.addBookRequestDTO", b =>
@@ -146,7 +149,7 @@ namespace REST_API_TEMPLATEE.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("AddBookRequestDTOs", (string)null);
+                    b.ToTable("AddBookRequestDTOs");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.Domain.Author", b =>
@@ -163,7 +166,7 @@ namespace REST_API_TEMPLATEE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.Domain.Book_Author", b =>
@@ -186,7 +189,7 @@ namespace REST_API_TEMPLATEE.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Books_Authors", (string)null);
+                    b.ToTable("Books_Authors");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.Domain.Publishers", b =>
@@ -203,7 +206,7 @@ namespace REST_API_TEMPLATEE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publishers", (string)null);
+                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("REST_API_TEMPLATEE.Models.Book", b =>

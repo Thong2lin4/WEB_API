@@ -1,17 +1,27 @@
 [
   {
     "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
-    "Method": "GetAuthors",
+    "Method": "GetAuthor",
     "RelativePath": "api/Author",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[REST_API_TEMPLATEE.Models.Domain.Author, REST_API_TEMPLATEE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
-    "Method": "AddAuthor",
+    "Method": "AddAuthorAsync",
     "RelativePath": "api/Author",
     "HttpMethod": "POST",
     "IsController": true,
@@ -19,13 +29,13 @@
     "Parameters": [
       {
         "Name": "author",
-        "Type": "REST_API_TEMPLATEE.Models.Author",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Author",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "REST_API_TEMPLATEE.Models.Author",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Author",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -38,88 +48,20 @@
   {
     "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
     "Method": "GetAuthor",
-    "RelativePath": "api/Author/id",
+    "RelativePath": "api/Author/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "includeBooks",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
-    "Method": "UpdateAuthor",
-    "RelativePath": "api/Author/id",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": false
-      },
-      {
-        "Name": "author",
-        "Type": "REST_API_TEMPLATEE.Models.Author",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
-    "Method": "DeleteAuthor",
-    "RelativePath": "api/Author/id",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
-    "Method": "GetBooks",
-    "RelativePath": "api/Book",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
-    "Method": "AddBook",
-    "RelativePath": "api/Book",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "book",
-        "Type": "REST_API_TEMPLATEE.Models.Book",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "REST_API_TEMPLATEE.Models.Book",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Author",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -130,37 +72,37 @@
     ]
   },
   {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
-    "Method": "GetBooks",
-    "RelativePath": "api/Book/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Guid",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
-    "Method": "UpdateBook",
-    "RelativePath": "api/Book/{id}",
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
+    "Method": "PutAuthor",
+    "RelativePath": "api/Author/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Guid",
+        "Type": "System.Int32",
         "IsRequired": true
       },
       {
-        "Name": "book",
-        "Type": "REST_API_TEMPLATEE.Models.Book",
+        "Name": "author",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Author",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.AuthorController",
+    "Method": "DeleteAuthor",
+    "RelativePath": "api/Author/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -168,15 +110,177 @@
   },
   {
     "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
-    "Method": "DeleteBook",
-    "RelativePath": "api/Book/{id}",
+    "Method": "AddBook",
+    "RelativePath": "api/Book/add-book",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addBookRequestDTO",
+        "Type": "REST_API_TEMPLATEE.Models.DTO.addBookRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
+    "Method": "DeleteBookById",
+    "RelativePath": "api/Book/delete-book-by-id/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "id",
-        "Type": "System.Guid",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
+    "Method": "GetAll",
+    "RelativePath": "api/Book/get-all-books",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
+    "Method": "GetBookById",
+    "RelativePath": "api/Book/get-book-by-id/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.BookController",
+    "Method": "UpdateBookById",
+    "RelativePath": "api/Book/update-book-by-id/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "bookDTO",
+        "Type": "REST_API_TEMPLATEE.Models.DTO.addBookRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.PublishersController",
+    "Method": "GetPublishers",
+    "RelativePath": "api/Publishers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[REST_API_TEMPLATEE.Models.Domain.Publishers, REST_API_TEMPLATEE, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.PublishersController",
+    "Method": "PostPublishers",
+    "RelativePath": "api/Publishers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "publishers",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Publishers",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.PublishersController",
+    "Method": "GetPublishers",
+    "RelativePath": "api/Publishers/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Publishers",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.PublishersController",
+    "Method": "PutPublishers",
+    "RelativePath": "api/Publishers/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "publishers",
+        "Type": "REST_API_TEMPLATEE.Models.Domain.Publishers",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "REST_API_TEMPLATEE.Controllers.PublishersController",
+    "Method": "DeletePublishers",
+    "RelativePath": "api/Publishers/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

@@ -1,20 +1,29 @@
 ﻿using REST_API_TEMPLATEE.Models;
+using REST_API_TEMPLATEE.Models.Domain;
+using static System.Reflection.Metadata.BlobBuilder;
 namespace REST_API_TEMPLATEE.Services
 {
-        public interface ILibraryService
+    public interface ILibraryService
         {
-            // Author Services
-            Task<List<Author>> GetAuthorsAsync(); // GET All Authors
-            Task<Author> GetAuthorAsync(Guid id, bool includeBooks = false); // GET Single Author
-            Task<Author> AddAuthorAsync(Author author); // POST New Author
-            Task<Author> UpdateAuthorAsync(Author author); // PUT Author
-            Task<(bool, string)> DeleteAuthorAsync(Author author); // DELETE Author
+        // Authors
+        Task<List<Author>> GetAuthorsAsync();
+        Task<Author> GetAuthorAsync(int id);
+        Task<Author> AddAuthorAsync(Author author);
+        Task<Author> UpdateAuthorAsync(Author author);
+        Task<(bool, string)> DeleteAuthorAsync(Author author);
 
-            // Book Services
-            Task<List<Book>> GetBooksAsync(); // GET All Books
-            Task<Book> GetBookAsync(Guid id); // Get Single Book
-            Task<Book> AddBookAsync(Book book); // POST New Book
-            Task<Book> UpdateBookAsync(Book book); // PUT Book
-            Task<(bool, string)> DeleteBookAsync(Book book); // DELETE Book
-        }
+        // Publishers
+        Task<List<Publishers>> GetPublishersAsync();
+        Task<Publishers> GetPublisherAsync(int id);
+        Task<Publishers> AddPublisherAsync(Publishers publisher);
+        Task<Publishers> UpdatePublisherAsync(Publishers publisher);
+        Task<(bool, string)> DeletePublisherAsync(Publishers publisher);
+
+        // Books
+        Task<List<Book>> GetBooksAsync();
+        Task<Book> GetBookAsync(int id);
+        Task<Book> AddBookAsync(Book book);
+        Task<Book> UpdateBookAsync(Book book);
+        Task<(bool, string)> DeleteBookAsync(Book book);
+    }
 }

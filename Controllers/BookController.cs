@@ -1,88 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using REST_API_TEMPLATEE.Data;
+using REST_API_TEMPLATEE.Models.DTO;
 using REST_API_TEMPLATEE.Models;
-using REST_API_TEMPLATEE.Services;
+using REST_API_TEMPLATEE.Repositories;
+using System.ComponentModel;
 
 namespace REST_API_TEMPLATEE.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class BookController : ControllerBase
     {
-        private readonly ILibraryService _libraryService;
-
-        public BookController(ILibraryService libraryService)
+        private readonly AppDbContext _context;
+        private readonly IBookRepository _bookRepository;
+        public BookController(AppDbContext context, IBookRepository bookRepository)
         {
-            _libraryService = libraryService;
-        }
+            _context = context;
+            _bookRepository = bookRepository;
 
+        }
+        [HttpGet("get-all-books")]
+        public IActionResult GetAll()
+        {
+            // su dung reposity pattern
+            var allBooks = _bookRepository.GetAllBooks();
+            return Ok(allBooks);
+        }
         [HttpGet]
-        public async Task<IActionResult> GetBooks()
+        [Route("get-book-by-id/{id}")]
+        public IActionResult GetBookById([FromRoute] int id)
         {
-            var books = await _libraryService.GetBooksAsync();
-            if (books == null)
-            {
-                return StatusCode(StatusCodes.Status204NoContent, "No books in database.");
-            }
-
-            return StatusCode(StatusCodes.Status200OK, books);
+            var bookWithIdDTO = _bookRepository.GetBookById(id);
+            return Ok(bookWithIdDTO);
         }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBooks(Guid id)
+        [HttpPost("add-book")]
+        public IActionResult AddBook([FromBody] addBookRequestDTO addBookRequestDTO)
         {
-            Book book = await _libraryService.GetBookAsync(id);
-
-            if (book == null)
-            {
-                return StatusCode(StatusCodes.Status204NoContent, $"No book found for id: {id}");
-            }
-
-            return StatusCode(StatusCodes.Status200OK, book);
+            var bookAdd = _bookRepository.AddBook(addBookRequestDTO);
+            return Ok(bookAdd);
         }
-
-        [HttpPost]
-        public async Task<ActionResult<Book>> AddBook(Book book)
+        [HttpPut("update-book-by-id/{id}")]
+        public IActionResult UpdateBookById(int id, [FromBody] addBookRequestDTO bookDTO)
         {
-            var dbBook = await _libraryService.AddBookAsync(book);
+            var updateBook = _bookRepository.UpdateBookById(id, bookDTO);
+            return Ok(updateBook);
 
-            if (dbBook == null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{book.Title} could not be added.");
-            }
-
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(Guid id, Book book)
+        [HttpDelete("delete-book-by-id/{id}")]
+        public IActionResult DeleteBookById(int id)
         {
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
-
-            Book dbBook = await _libraryService.UpdateBookAsync(book);
-
-            if (dbBook == null)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"{book.Title} could not be updated");
-            }
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook(Guid id)
-        {
-            var book = await _libraryService.GetBookAsync(id);
-            (bool status, string message) = await _libraryService.DeleteBookAsync(book);
-
-            if (status == false)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, message);
-            }
-
-            return StatusCode(StatusCodes.Status200OK, book);
+            var deleteBook = _bookRepository.DeleteBookById(id);
+            return Ok(deleteBook);
         }
     }
 }
